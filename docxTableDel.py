@@ -14,9 +14,10 @@ for table in doc.tables:
     
     # Her satırı işle
     for row in table.rows:
-        # İlk 3 hücreyi koru, son hücreyi sil
+        # İlk 3 hücreyi koru, son hücreyi temizle
         for i in range(3, len(row.cells)):
-            row.cells[i].clear()
+            for paragraph in row.cells[i].paragraphs:
+                paragraph.clear()
         
         # Hücre içeriğini düzenle, eğer 3 hücre boş değilse, % hesapla ve ek olarak birleştirme işlemi yap
         if row.cells[0].text.strip() and row.cells[1].text.strip() and row.cells[2].text.strip():
