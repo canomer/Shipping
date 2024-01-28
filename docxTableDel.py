@@ -1,7 +1,7 @@
 from docx import Document
 import os
 
-def remove_fourth_column(docx_file):
+def clear_fourth_column(docx_file):
     # Belgeyi yükle
     doc = Document(docx_file)
 
@@ -11,10 +11,10 @@ def remove_fourth_column(docx_file):
         return
 
     for i, table in enumerate(doc.tables):
-        # Her tablo için dördüncü sütunu kontrol et ve sil
+        # Her tablo için dördüncü sütunu kontrol et ve içeriğini temizle
         for row in table.rows:
             if len(row.cells) > 3:  # Eğer dördüncü sütun varsa
-                del row.cells[3]  # Dördüncü sütunu sil
+                row.cells[3].text = ''  # Dördüncü sütunun içeriğini temizle
 
         # İlerlemeyi yüzde olarak konsola yazdır
         progress = (i + 1) / total_tables * 100
@@ -26,4 +26,4 @@ def remove_fourth_column(docx_file):
     print(f"Değişiklikler kaydedildi: {new_file}")
 
 # Scripti kullanmak için
-# remove_fourth_column("yolu/belgenizin_adı.docx")
+# clear_fourth_column("yolu/belgenizin_adı.docx")
