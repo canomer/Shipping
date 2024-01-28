@@ -1,37 +1,29 @@
-import docx
-from docx.enum.table import WD_CELL_VERTICAL_ALIGNMENT
+from docx import Document
+import os
 
-# .docx dosyasını aç
-doc = docx.Document("belge.docx")
+def remove_fourth_column(docx_file):
+    # Belgeyi yükle
+    doc = Document(docx_file)
 
-# Tablo sayacı
-table_count = 0
+    total_tables = len(doc.tables)
+    if total_tables == 0:
+        print("Bu belgede tablo bulunmuyor.")
+        return
 
-# Her tabloyu işle
-for table in doc.tables:
-    table_count += 1
-    total_rows = len(table.rows)
-    
-    # Her satırı işle
-    for row in table.rows:
-        # İlk 3 hücreyi koru, son hücreyi temizle
-        for i in range(3, len(row.cells)):
-            for paragraph in row.cells[i].paragraphs:
-                paragraph.clear()
-        
-        # Hücre içeriğini düzenle, eğer 3 hücre boş değilse, % hesapla ve ek olarak birleştirme işlemi yap
-        if row.cells[0].text.strip() and row.cells[1].text.strip() and row.cells[2].text.strip():
-            percentage = 100
-            row.cells[0].vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
-            row.cells[1].vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
-            row.cells[2].vertical_alignment = WD_CELL_VERTICAL_ALIGNMENT.CENTER
-        else:
-            percentage = 0
-        
-        # Yüzdeyi son hücreye ekle
-        row.cells[-1].text = f"{percentage}%"
+    for i, table in enumerate(doc.tables):
+        # Her tablo için dördüncü sütunu kontrol et ve sil
+        for row in table.rows:
+            if len(row.cells) > 3:  # Eğer dördüncü sütun varsa
+                del row.cells[3]  # Dördüncü sütunu sil
 
-# Dosyayı kaydet
-doc.save("duzenlenmis_belge.docx")
+        # İlerlemeyi yüzde olarak konsola yazdır
+        progress = (i + 1) / total_tables * 100
+        print(f"İşlem tamamlandı: %{progress:.2f}")
 
-print(f"Toplam {table_count} tablo düzenlendi ve dosya kaydedildi.")
+    # Değişiklikleri kaydet
+    new_file = os.path.splitext(docx_file)[0] + "_modified.docx"
+    doc.save(new_file)
+    print(f"Değişiklikler kaydedildi: {new_file}")
+
+# Scripti kullanmak için
+# remove_fourth_column("yolu/belgenizin_adı.docx")
