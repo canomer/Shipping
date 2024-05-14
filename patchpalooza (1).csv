@@ -1,3 +1,0 @@
-﻿"CVE","CVSS","Title","Info","Threat Category","Product"
-"CVE-2024-30040","8.8","Windows MSHTML Platform Security Feature Bypass Vulnerability","","Security Feature Bypass","Windows"
-"CVE-2024-30051","7.8","Windows DWM Core Library Elevation of Privilege Vulnerability","","Elevation of Privilege","Windows"
